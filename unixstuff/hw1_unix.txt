@@ -1,0 +1,98 @@
+   17  cd ~/Documents/workspace/Techniques/;ls
+   18  ls
+   19  mkdir unixstuff
+   20  ls
+   21  cd unixstuff
+   22  ls
+   23  ls -a
+   24  cd .
+   25  cd ..
+   26  pwd
+   27  mkdir backups
+   28  cd unixstuff/
+   29  ls
+   30  pwd
+   31  cd ..
+   32  ls unixstuff/
+   33  ls backup
+   34  ls unixstuff/backups/
+   35  ls ~/unixstuff
+   36  ls ~
+   37  ls ~/..
+   38  scp mcopla1@vega2:/data/ASTR303/HW1/science.txt .
+   39  cd unixstuff/
+   40  cp ../science.txt backups/
+   41  mv science.bak backups/
+   42  cp ../science.txt tempfile.txt
+   43  ls
+   44  rm tempfile.txt 
+   45  ls
+   46  mkdir tempstuff
+   47  rmdir tempstuff
+   48  clear
+   49  cat ../science.txt 
+   50  less ../science.txt 
+   51  head ../science.txt 
+   52  head -5 ../science.txt 
+   53  tail ../science.txt
+   54  less ../science.txt 
+   55  less ../science.txt 
+   56  grep science ../science.txt 
+   57  grep Science ../science.txt 
+   58  grep i science ../science.txt 
+   59  grep -i 'spinning top' ../science.txt 
+   60  grep -ivc science ../science.txt 
+   61  wc -w ../science.txt 
+   62  wc -l ../science.txt 
+   63  cat
+   64  cat
+   65  cat>list1
+   66  cat list1
+   67  cat>list2
+   68  cat >>list1
+   69  cat list1
+   70  cat list1 list2>biglist
+   71  cat biglist
+   72  sort
+   73  sort<biglist
+   74  sort<biglist>slist
+   75  sort biglist
+   76  who
+   77  who>names.txt
+   78  sort<names.txt
+   79  who|sort
+   80  who|wc -l
+   81  ls
+   82  grep p list*|sort
+   83  ls list*
+   84  ls *list
+   85  ls ?list
+   86  man wc
+   87  whatis wc
+   88  apropos keyword
+   89  apropos copy
+   90  apropos copy|grep cp
+   91  ls -l
+   92  chmod go-rwx biglist
+   93  chmod a+rw biglist
+   94  chmod a+rw science.txt; chmod a+rw backups
+   95  ps
+   96  sleep 10
+   97  sleep 10&
+   98  sleep 1000
+   99  bg
+  100  jobs
+  101  fg %2
+  102  fg %1
+  103  sleep 100
+  104  kill %2
+  105  sleep 100&;jobs
+  106  sleep 100 &
+  107  jobs
+  108  kill %4
+  109  sleep 1000 &
+  110  os
+  111  ps
+  112  kill 9787
+  113  kill -9 9786
+  114  history>hw1_unix.txt

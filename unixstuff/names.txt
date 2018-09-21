@@ -1,0 +1,2 @@
+maxcoplan console  Sep  1 20:43 
+maxcoplan ttys000  Sep  5 18:58 
