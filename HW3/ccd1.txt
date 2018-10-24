@@ -1,0 +1,306 @@
+
+                          IRAF TUTORIAL SESSIONS
+
+                                 Exercise 2.
+
+
+This exercise is designed to show you how IRAF deals with the preliminary
+reductions of CCD data, including the overscan subtraction, the bias or
+zero level subtraction, the dark subtraction, and the flat fielding.  The
+images for this exercise are direct imaging data taken at the Kitt Peak
+National Observatory by Dr. George Jacoby.  Spectroscopic reductions are 
+similar but the flat fielding is often done differently.  Exercise 3. deals 
+with some spectroscopic data.  This exercise assumes that you have worked
+through Exercise 1. and feel comfortable with the basics of IRAF.
+
+We can approach this exercise from two different paths.  The first path
+is the "long" approach to the problem, but will allow you to step through
+this process one task at a time.  The second path is the preferable way to
+do these preliminary reductions but for the first time user the actual
+steps may not be obvious.
+
+We will assume that you are logged into IRAF in an xgterm window, or a similar
+graphics terminal emulator window.  It can be helpful to also display
+images using the ds9 window for this exercise.
+
+Create a new directory for this exericse in your home directory: A303_HW4/
+Now create a subdirectory within A303_HW4/ called images.
+Change directories into that new subdirectory and copy the image files: 
+
+          cl> cd A303_HW4/images
+          cl> cp /data/A303/HW4/images/m92*fits .
+          cl> ls
+
+As directed below, you will also create a new text file in this subdirectory
+called ccd1_notes.txt. In this text file, you will type your responses to
+questions posed below. You will copy the output of some tasks into that
+file as well. 
+
+The image files you've copied are the data and calibration frames for some images of M92.
+There is one master bias or "zero" frame, two flat field frames and
+four images all taken through either V or B filters.
+
+The imhead command will give you information on frames from the header.
+The l- flag gives a short header. Using l+ will give all the header
+information. Try both.
+
+          cl> imhead m92*.fits l-
+
+The bias frame is an average of 25 frames.  This is done to minimize the
+noise.  Each flat is an average of 5 frames to improve the signal to noise.
+Notice that the pixel type is "short" or 16-bit data.
+
+PATH 1.
+-------
+
+The first step would be to average the bias frames.  This can be done
+with the task IMCOMBINE in the IMAGES.IMMATCH package.  We would then do the 
+same for the flats.  Some type of pixel rejection could be used during this 
+step to eliminate bad pixels or cosmic rays.  Since these steps have already 
+been done for us we can continue on to the overscan subtraction.
+
+We need to determine two things at this point:  the overscan region to 
+subtract and the trimming parameters to determine the output image size.  For
+this chip the overscan region is 32 columns but we often do not use all of the
+columns.  The overscan region and any bad rows or columns along the edges of 
+the frame are then trimmed from the image to produce our output image.  We
+determine these parameters with imexamine, using one of the flat field frames.
+
+          cl> display m92006 1
+          cl> imexamine 
+
+Type "l" in the ds9 window to get a line across the image in the imexamine
+plot window.
+
+Type "g" in the ds9 window to get a graphics cursor for the imexam plot
+window and "i" in the imexam window to go back to the ds9 image cursor.
+(You may need to click in each window, graphics or image, to activate the new
+type of cursor.) The graphics cursor is a red crosshair in the plot window.
+This will allow you to execute commands to change the plot.
+
+You can access help for imexamine by typing ? at the image cursor. But the
+same information is also online:
+http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?imexamine
+
+When using the graphics cursor,you can reset the number of lines averaged
+together for the plot, e.g. by typing :naver 10 <enter>  Now, when you go 
+back to the image cursor and type "l" again for a line plot you will see 
+it is an average of 10 lines.
+
+To zoom in on an area of the plot, you need to rescale the x and/or y axis.
+To do this, from a graphics cursor, type :x xmin xmax to change the x range
+of the plot. Likewise for y. 
+
+Here's a helpful summary of what we've seen so far:
+l       # letter `l' produces a plot of the line under the cursor (goes across
+          all columns)
+c       # letter `c' produces a plot of the column under the cursor (goes
+          across all rows)
+g       # changes cursor over to the graphics window. Move the mouse over that
+          frame
+x       # in graphics mode, this will print the cursor coordinates
+:y 200 3000  # rescales the y-axis of the plot to range only between 
+               200 and 3000
+:y      # resets y limits
+
+Use what you've learned so far to determine the columns to use for the overscan. 
+ 
+When you have determined the columns to use for the overscan, plot the average of
+these columns.  What columns did you decide to use? Save this as a note in
+ccd1_notes.txt. We'll refer to these as (colbias_min,colbias_max) below. But
+when performing the tasks, enter your own numbers in place of these variables.
+
+Now decide what columns and rows will be included in our output image.  Plot
+several rows and columns and see what these values should be.  Again you 
+will need to expand the plot.  Look at the rows first - do you see any bad
+columns at the left edge - what about the right edge?  We certainly want
+to trim off the overscan plus a bad column or two on the right edge of the plot.
+Then look at some columns.  There appear to be some bad rows there as well.
+Expand each edge and determine the usable range of rows.  
+
+Note the ranges of usable columns and rows in ccd1_notes.txt in this format:
+Bias section:          [colbias_min:colbias_max,rowmin:rowmax]
+Data (or trim section) [colmin:colmax,rowmin:rowmax]
+We'll refer to these as (colmin,rowmin) and (colmax,rowmax) below. But when 
+entering your responses into ccd1_notes.txt and when performing the tasks,
+enter your own numbers in place of these variables.
+
+Once we have this information we are ready to do the overscan subtraction
+and trimming.  Load the packages.  And then edit the task COLBIAS to reflect
+the values that we determined.
+
+          cl> noao
+          cl> imred
+          cl> bias
+          cl> epar colbias          # do you remember that you can save
+                                      the changes with :q?
+
+
+After editing, running LPAR on COLBIAS should show parameters similar to the following:
+
+cl> lpar colbias
+        input = m92006.fits      Input images
+       output = trim_m92006.fits Output images
+        (bias = "[colbias_min:colbias_max,rowmin:rowmax]") Bias section
+        (trim = "[colmin:colmax,rowmin:rowmax]") Trim section
+      (median = no)             Use median instead of average in column bias?
+ (interactive = yes)            Interactive?
+    (function = "chebyshev")    Fitting function
+       (order = 1)              Order of fitting function
+  (low_reject = 3.)             Low sigma rejection factor
+ (high_reject = 3.)             High sigma rejection factor
+    (niterate = 1)              Number of rejection iterations
+    (logfiles = "")             Log files
+    (graphics = "stdgraph")     Graphics output device
+      (cursor = "")             Graphics cursor input
+        (mode = "ql")           
+
+
+Notice that the overscan and trim values are entered as "image sections",
+the x-range and y-range in square brackets.  The trim section is that part
+of the image we wish to keep.
+
+So, I think we are ready to execute COLBIAS - this task will subtract the 
+overscan from each image and then trim the image according to our 
+specifications.  Since the task is being run interactively we will first 
+see a plot of the average of the overscan vector; we could modify the fitting 
+parameters at this time but we like to use a straight line for these data -
+notice the fitting parameters at the top of the plot.  A return is sufficient 
+for the task queries - type q in plot mode to continue.
+
+          cl> colbias
+          cl> dir
+          cl> imhead trim_m92006.fits           # notice the new size of these images
+          cl> implot trim_m92006.fits           # check your flat
+
+This last command brings up a plot window independent of the image loaded into
+ds9. But it plots the same things and works in much the same way as the graphics 
+mode of imexamine.
+
+Now, what we really want is to perform this task on all the images in the
+directory. Instead of running colbias once for each of them, we'll run them
+all at one time, since they should all share the same trim and bias sections.
+
+To do this, we'll first delete the trimmed image we just made. (We'll remake
+it in the "all at once" run.) Next, we'll generate a list of all the image
+files in this directory:
+
+          cl> ls *fits > list.images
+
+Now, EPAR colbias again, with the following for the input and output fields:
+        input = @list.images          Input images
+        output= trim_//@list.images   Output images
+
+        cl> colbias
+
+The next step is to subtract the bias or zero frame from each of the
+images.  This is best done with IMARITH.  Let us first create a file with
+a list of the images to process; we will use this as input and output to
+IMARITH, overwriting our input data.
+
+          cl> ls trim*.fits > list.trimmed
+          cl> emacs list.trimmed                # delete bias frame
+                                                  (m91001.fits) from list
+          cl> imhead @list.trimmed
+          cl> epar imarith
+
+Before we execute this step, let's look at the statistics of the zero frame
+and the pre-zero-subtracted images using IMSTATISTICS (Copy the output into 
+ccd1_notes.txt):
+
+cl> imstat trim_m92001.fits
+cl> imstat @list.trimmed  
+
+If you do LPAR on IMARITH your parameter file should look like the following.
+
+cl> lpar imarith
+     operand1 = "@list.trimmed" Operand image or numerical constant
+           op = "-"             Operator
+     operand2 = "trim_m92001"   Operand image or numerical constant
+       result = "@list.trimmed" Resultant image
+       (title = "")             Title for resultant image
+     (divzero = 0.)             Replacement value for division by zero
+     (hparams = "")             List of header parameters
+     (pixtype = "")             Pixel type for resultant image
+    (calctype = "")             Calculation data type
+     (verbose = yes)            Print operations?
+       (noact = no)             Print operations without performing them?
+        (mode = "ql")           
+
+Execute IMARITH.
+
+          cl> imarith
+
+Now, let's examine the same images, since we overwrote them in this last step.
+Again, copy the output to ccd1_notes.txt:
+
+cl> imstat trim_m92001.fits
+
+At this time, any dark subtraction should be done.  That can be done
+using the task DARKSUB in the NOAO.IMRED.GENERIC package. The frames
+need to be scaled by exposure time before the subtraction is done, so
+this information needs to be in the header. We have no dark frames
+so we will skip this step.
+
+We finally arrive at the flat fielding stage.  We have two flats and they
+need to be normalized before we divide them into our object frames.  
+We will use IMSTATISTICS to determine the normalization value for each flat,
+and then use IMARITH to create the normalized flats.
+
+          cl> imstat trim_m92006,trim_m92007 fields="image,mode" 
+          cl> imarith trim_m92006 / 1313 Bflat
+          cl> imarith trim_m92007 / 1468 Vflat
+
+Record the output of the first command (imstat) in ccd1_notes.txt
+In ccd1_notes.txt, note why, in the next two steps, did we divide these 
+two images by these specific values? What effect will this have on the images?
+
+          cl> display Bflat 1       
+          cl> display Vflat 2
+          cl> imexamine        #examine cuts across both flats
+
+Record the output of IMSTATISTICS on the Bflat and Vflat images in your
+ccd1_notes.txt file. What do you notice about the value of the means?
+Was your predcition realized? (Note this in ccd1_notes.txt)
+
+
+Now we can divide each of the object frames by the appropriate flat.  It is
+your responsibility to substitute in the correct image names for the ????.  Why
+does it require two executions of IMARITH? (Answer in ccd1_notes.txt)
+
+          cl> imhead trim*.fits l-
+          cl> imarith trim_m92010 / ??? n92010
+          cl> imarith trim_m92011 / ??? n92011
+          cl> imarith trim_m92014 / ??? n92014
+          cl> imarith trim_m92015 / ??? n92015
+
+Look at these final images with display and/or imexamine.  Check to see if 
+the sky is flat across the image.  Sometimes the dome flats are not 
+sufficient for flattening images - additional sky flats may need to be used.
+See the task MKSKYFLAT in the CCDRED package.
+
+You now have a set of images that have been zero and flat corrected. (And dark
+corrected if you apply the DARKSUB correction noted above.)
+
+PATH 2.
+-------
+
+We will not go through it here, but there is a task that will perform all
+these steps in one run, the task ccdproc in the NOAO.IMRED.CCDRED package.
+Should you ever have to process a large number of data files, this task could
+come in handy.
+
+
+-------------------------------------------------------------------------------
+
+                                 References
+
+Type "help ccdred" to see a list of the tasks in this package.  Each task
+has an online help page.  Also see the list of "Additional Help Topics".
+
+A User's Guide to CCD Reductions with IRAF, by Phil Massey, February 1997.
+
+There is a "demo" task in the IMRED.CCDRED.CCDTEST package that may be 
+instructive to run as well.
+
+---------------------------------end of exercise--------------------------------

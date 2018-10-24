@@ -1,0 +1,13 @@
+
+Launching imexam using documentation at https://github.com/spacetelescope/imexam/blob/master/example_notebooks/imexam_ds9_photometry.ipynb
+
+import os
+os.environ['XPA_METHOD'] = "local"
+from astropy.io import ascii
+import matplotlib.image as mpimage
+
+import photutils
+from photutils import daofind
+
+import imexam
+ds9=imexam.connect('jescott')
