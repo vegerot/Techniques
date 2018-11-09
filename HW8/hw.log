@@ -1,0 +1,366 @@
+(astroconda3) ➜  HW8 git:(master) ✗ fg
+[1]  - 44980 continued  ipython
+In [4]: a.load_fits("flat/flat_m92014.fits")                                        
+
+In [5]: a.scale()                                                                   
+
+In [6]: a.cmap()                                                                    
+['grey', 'red', 'green', 'red', 'blue', 'a', 'b', 'bb', 'he', 'i8', 'aips0', 'sls', 'hsv', 'heat', 'cool', 'rainbow', 'standard', 'staircase', 'color']
+
+In [7]: a.cmap(color='heat')                                                        
+
+In [8]: a.cmap(color=default)                                                       
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-8-bf847bf66f9d> in <module>
+----> 1 a.cmap(color=default)
+
+NameError: name 'default' is not defined
+
+In [9]: a.cmap(color='default')                                                     
+Unrecognized color map, choose one of these:
+['grey', 'red', 'green', 'red', 'blue', 'a', 'b', 'bb', 'he', 'i8', 'aips0', 'sls', 'hsv', 'heat', 'cool', 'rainbow', 'standard', 'staircase', 'color']
+
+In [10]: a.cmap(color='standard')                                                   
+
+In [11]: a.cmap(color='grey')                                                       
+
+In [12]: a.imexam()                                                                 
+
+Press 'q' to quit
+
+2	Make the next plot in a new window
+a	Aperture sum, with radius region_size 
+b	Return the 2D gauss fit center of the object
+c	Return column plot
+e	Return a contour plot in a region around the cursor
+g	Return curve of growth plot
+h	Return a histogram in the region around the cursor
+j	1D [Gaussian1D default] line fit 
+k	1D [Gaussian1D default] column fit
+l	Return line plot
+m	Square region stats, in [region_size],default is median
+r	Return the radial profile plot
+s	Save current figure to disk as [plot_name]
+t	Make a fits image cutout using pointer location
+w	Display a surface plot around the cursor location
+x	Return x,y,value of pixel
+y	Return x,y,value of pixel
+Current image /Users/maxcoplan/Documents/workspace/Techniques/HW8/flat/flat_m92014.fits
+Invalid key
+rInvalid key
+xc=178.272479	yc=191.430364
+Invalid key
+xc=178.272480	yc=191.430364
+Invalid key
+xc=243.077444	yc=-12.260088
+qqqInvalid key
+
+In [13]: a.set_plot_pars("a", "radius", 10)                                         
+set aper_phot_pars: radius to 10
+
+In [14]: a.rimexam()                                                                
+Out[14]: 
+{'function': ['radial_profile'],
+ 'title': [None, 'Title of the plot'],
+ 'xlabel': ['Radius', 'The string for the xaxis label'],
+ 'ylabel': ['Flux', 'The string for the yaxis label'],
+ 'pixels': [True, 'Plot all pixels at each radius? (False bins the data)'],
+ 'fitplot': [False, 'Overplot profile fit?'],
+ 'fittype': ['Gaussian2D', 'Profile type to fit (Gaussian2D)'],
+ 'center': [True, 'Solve for center using 2d Gaussian? [bool]'],
+ 'background': [False, 'Subtract background? [bool]'],
+ 'skyrad': [10.0, 'Background inner radius in pixels, from center of object'],
+ 'width': [5.0, 'Background annulus width in pixels'],
+ 'magzero': [25.0, 'magnitude zero point'],
+ 'rplot': [8.0, 'Plotting radius in pixels'],
+ 'pointmode': [True, 'plot points instead of lines? [bool]'],
+ 'marker': ['o', 'The marker character to use, matplotlib style'],
+ 'getdata': [False, 'print the plotted data values']}
+
+In [15]: a.imexam()                                                                 
+
+Press 'q' to quit
+
+2	Make the next plot in a new window
+a	Aperture sum, with radius region_size 
+b	Return the 2D gauss fit center of the object
+c	Return column plot
+e	Return a contour plot in a region around the cursor
+g	Return curve of growth plot
+h	Return a histogram in the region around the cursor
+j	1D [Gaussian1D default] line fit 
+k	1D [Gaussian1D default] column fit
+l	Return line plot
+m	Square region stats, in [region_size],default is median
+r	Return the radial profile plot
+s	Save current figure to disk as [plot_name]
+t	Make a fits image cutout using pointer location
+w	Display a surface plot around the cursor location
+x	Return x,y,value of pixel
+y	Return x,y,value of pixel
+Current image /Users/maxcoplan/Documents/workspace/Techniques/HW8/flat/flat_m92014.fits
+Invalid key
+using model: <class 'astropy.modeling.functional_models.Gaussian1D'>
+Name: Gaussian1D
+Inputs: ('x',)
+Outputs: ('y',)
+Fittable parameters: ('amplitude', 'mean', 'stddev')
+xc=358.282947	yc=198.275894
+Problem with centering, pixel coords
+(177,191) mean=   178.30, fwhm=     3.41
+Invalid key
+
+In [16]: a.jimexam()                                                                
+Out[16]: 
+{'function': ['line_fit'],
+ 'func': ['Gaussian1D', 'function for fitting (see available)'],
+ 'title': [None, 'Title of the plot'],
+ 'xlabel': ['Column', 'The string for the xaxis label'],
+ 'ylabel': ['Flux', 'The string for the yaxis label'],
+ 'background': [False, 'Solve for background? [bool]'],
+ 'width': [10.0, 'Background  width in pixels'],
+ 'order': [1, 'Polynomial order to fit, 1=line'],
+ 'rplot': [15, 'Plotting radius in pixels'],
+ 'pointmode': [True, 'plot points instead of lines? [bool]'],
+ 'logx': [False, 'log scale x-axis?'],
+ 'logy': [False, 'log scale y-axis?'],
+ 'center': [True, 'Recenter around the local max']}
+
+In [17]: a.set_plot_pars("j", "background", True")                                  
+  File "<ipython-input-17-37e43a638dab>", line 1
+    a.set_plot_pars("j", "background", True")
+                                             ^
+SyntaxError: EOL while scanning string literal
+
+
+In [18]: a.set_plot_pars("j", "background", True)                                   
+set line_fit_pars: background to True
+
+In [19]: a.imexam                                                                   
+Out[19]: <bound method Connect.imexam of <imexam.connect.Connect object at 0x1a20f7d128>>
+
+In [20]: a.imexam()                                                                 
+
+Press 'q' to quit
+
+2	Make the next plot in a new window
+a	Aperture sum, with radius region_size 
+b	Return the 2D gauss fit center of the object
+c	Return column plot
+e	Return a contour plot in a region around the cursor
+g	Return curve of growth plot
+h	Return a histogram in the region around the cursor
+j	1D [Gaussian1D default] line fit 
+k	1D [Gaussian1D default] column fit
+l	Return line plot
+m	Square region stats, in [region_size],default is median
+r	Return the radial profile plot
+s	Save current figure to disk as [plot_name]
+t	Make a fits image cutout using pointer location
+w	Display a surface plot around the cursor location
+x	Return x,y,value of pixel
+y	Return x,y,value of pixel
+Current image /Users/maxcoplan/Documents/workspace/Techniques/HW8/flat/flat_m92014.fits
+Invalid key
+using model: <class 'astropy.modeling.functional_models.Gaussian1D'>
+Name: Gaussian1D
+Inputs: ('x',)
+Outputs: ('y',)
+Fittable parameters: ('amplitude', 'mean', 'stddev')
+xc=178.529110	yc=206.092100
+(178,191) mean=  1495.76, fwhm=  1447.25
+Invalid key
+
+In [21]: a.set_plot_pars("j" "rplot", 10)                                           
+Key not available
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-21-70d1cec9ed43> in <module>
+----> 1 a.set_plot_pars("j" "rplot", 10)
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/connect.py in set_plot_pars(self, key, item, value)
+    536 
+    537         """
+--> 538         fname, parname = self._get_function_name(key)
+    539         if parname:
+    540             current_dict = self.exam.__getattribute__(parname)
+
+TypeError: 'NoneType' object is not iterable
+
+In [22]: a.jimexam()                                                                
+Out[22]: 
+{'function': ['line_fit'],
+ 'func': ['Gaussian1D', 'function for fitting (see available)'],
+ 'title': [None, 'Title of the plot'],
+ 'xlabel': ['Column', 'The string for the xaxis label'],
+ 'ylabel': ['Flux', 'The string for the yaxis label'],
+ 'background': [True, 'Solve for background? [bool]'],
+ 'width': [10.0, 'Background  width in pixels'],
+ 'order': [1, 'Polynomial order to fit, 1=line'],
+ 'rplot': [15, 'Plotting radius in pixels'],
+ 'pointmode': [True, 'plot points instead of lines? [bool]'],
+ 'logx': [False, 'log scale x-axis?'],
+ 'logy': [False, 'log scale y-axis?'],
+ 'center': [True, 'Recenter around the local max']}
+
+In [23]: ls                                                                            
+data@ flat@
+
+In [24]: a                                                                             
+Out[24]: <imexam.connect.Connect at 0x1a20f7d128>
+
+In [25]: a.set_plot_pars("j", 'rplot' 10)                                              
+  File "<ipython-input-25-f87305521c1a>", line 1
+    a.set_plot_pars("j", 'rplot' 10)
+                                  ^
+SyntaxError: invalid syntax
+
+
+In [26]: a.set_plot_pars("j", 'rplot', 10)                                             
+set line_fit_pars: rplot to 10
+
+In [27]: a.imexam()                                                                    
+
+Press 'q' to quit
+
+2	Make the next plot in a new window
+a	Aperture sum, with radius region_size 
+b	Return the 2D gauss fit center of the object
+c	Return column plot
+e	Return a contour plot in a region around the cursor
+g	Return curve of growth plot
+h	Return a histogram in the region around the cursor
+j	1D [Gaussian1D default] line fit 
+k	1D [Gaussian1D default] column fit
+l	Return line plot
+m	Square region stats, in [region_size],default is median
+r	Return the radial profile plot
+s	Save current figure to disk as [plot_name]
+t	Make a fits image cutout using pointer location
+w	Display a surface plot around the cursor location
+x	Return x,y,value of pixel
+y	Return x,y,value of pixel
+Current image /Users/maxcoplan/Documents/workspace/Techniques/HW8/flat/flat_m92014.fits
+Invalid key
+xc=178.272480	yc=191.430364
+x              y              radius         flux           mag(zpt=25.00)sky             fwhm
+178.27         191.43         10             71787.30       12.86                         47.32          3.47
+^Cl
+---------------------------------------------------------------------------
+KeyboardInterrupt                         Traceback (most recent call last)
+<ipython-input-27-dd956da4eef7> in <module>
+----> 1 a.imexam()
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/connect.py in imexam(self)
+    150                 self._run_event_imexam()
+    151             else:
+--> 152                 self._run_imexam()
+    153         else:
+    154             warnings.warn("No valid image loaded in viewer")
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/connect.py in _run_imexam(self)
+    234                     self._check_slice()
+    235                 try:
+--> 236                     x, y, current_key = self.readcursor()
+    237                     self._check_frame()
+    238                     if self.window.iscube():
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/connect.py in readcursor(self)
+    292         in the form of x,y,str with array offset
+    293         """
+--> 294         return self.window.readcursor()
+    295 
+    296     def alignwcs(self, **kwargs):
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/ds9_viewer.py in readcursor(self)
+    708         """
+    709         try:
+--> 710             xpa_string = self.get("imexam any coordinate image")
+    711         except XpaException as e:
+    712             print("Xpa problem reading cursor: {0}".format(repr(e)))
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/ds9_viewer.py in get(self, param)
+    698         """
+    699         self._check_ds9_process()
+--> 700         return self.xpa.get(param)
+    701 
+    702     def readcursor(self):
+
+~/anaconda3/envs/astroconda3/lib/python3.6/site-packages/imexam/xpa_wrap.py in get(self, param)
+     13     def get(self, param=""):
+     14         """Get information from the xpa."""
+---> 15         return super(XPA, self).get(param.encode('utf-8', 'strict')).decode()
+     16 
+     17     def set(self, param="", buf=None):
+
+KeyboardInterrupt: 
+
+In [28]: l                                                                             
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-28-cde25b5e10ad> in <module>
+----> 1 l
+
+NameError: name 'l' is not defined
+
+In [29]: a.aimexam()                                                                   
+Out[29]: 
+{'function': ['aper_phot'],
+ 'center': [True, 'Center the object location using a 2d gaussian fit'],
+ 'width': [5, 'Width of sky annulus in pixels'],
+ 'subsky': [True, 'Subtract a sky background?'],
+ 'skyrad': [15, 'Distance to start sky annulus is pixels'],
+ 'radius': [10, 'Radius of aperture for star flux'],
+ 'zmag': [25.0, 'zeropoint for the magnitude calculation']}
+
+In [30]: a.set_plot_pars('a', 'radius', 42)                                            
+set aper_phot_pars: radius to 42
+
+In [31]: a.set_plot_pars('a', 'zmag', 42)                                              
+set aper_phot_pars: zmag to 42
+
+In [32]: a.imexam()                                                                    
+
+Press 'q' to quit
+
+2	Make the next plot in a new window
+a	Aperture sum, with radius region_size 
+b	Return the 2D gauss fit center of the object
+c	Return column plot
+e	Return a contour plot in a region around the cursor
+g	Return curve of growth plot
+h	Return a histogram in the region around the cursor
+j	1D [Gaussian1D default] line fit 
+k	1D [Gaussian1D default] column fit
+l	Return line plot
+m	Square region stats, in [region_size],default is median
+r	Return the radial profile plot
+s	Save current figure to disk as [plot_name]
+t	Make a fits image cutout using pointer location
+w	Display a surface plot around the cursor location
+x	Return x,y,value of pixel
+y	Return x,y,value of pixel
+Current image /Users/maxcoplan/Documents/workspace/Techniques/HW8/flat/flat_m92014.fits
+Invalid key
+xc=243.077444	yc=-12.260088
+x              y              radius         flux           mag(zpt=42.00)sky             fwhm
+243.08         -12.26         42             13223.05       31.70                         12.69          4.08
+Invalid key
+[190:195,175:180] median: 1253.5084621044887
+Invalid key
+[189:194,175:180] median: 1287.070359281437
+Invalid key
+xc=243.077444	yc=-12.260088
+Invalid key
+100 bins range:[26.879104477611943,4392.318518518518]
+Invalid key
+using model: <class 'astropy.modeling.functional_models.Gaussian1D'>
+Name: Gaussian1D
+Inputs: ('x',)
+Outputs: ('y',)
+Fittable parameters: ('amplitude', 'mean', 'stddev')
+xc=178.272480	yc=191.430364
+(178,191) mean=   178.30, fwhm=     3.41
+Invalid key
+

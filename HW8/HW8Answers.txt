@@ -1,0 +1,14 @@
+1. a.cmap(color='grey')
+2. a.set_plot_pars("j", 'rplot', 10) 
+3. 'radius'=10, 'skyrad'=10, a.set_plot_pars('a', 'radius', 42)    
+4. 'zmag'=25.0.  a.set_plot_pars('a', 'zmag', 42)
+5. xc=243.077444	yc=-12.260088
+x              y              radius         flux           mag(zpt=42.00)sky             fwhm
+243.08         -12.26         42             13223.05       31.70                         12.69          4.08
+
+
+Invalid key
+[189:194,175:180] median: 1287.070359281437
+
+
+
